@@ -32,8 +32,12 @@ function informarLocalizacao() {
     longitude = parseFloat(document.getElementById("input-longitude").value)
     if (latitude >= -90 && latitude <= 90 && longitude >= -180 && longitude <= 180) {
         document.querySelector('main').innerHTML = `
-        <h1 id="cidade">---</h1>
+        <div class="cidade-clima">
+            <h1 id="cidade">---</h1>
+            <img src="" alt="icone do clima">
+        </div>
         <h1 id="temperatura">---</h1>
+        <hr>
         <div class="condicoes-clima">
             <p id="sensacaoTermica">Sensação térmica:<span></span></p>
             <p id="tempMin">Temperatura mínima:<span></span></p>
@@ -55,15 +59,14 @@ function pegarAPI() {
 }
 
 function modificarHTML(response) {
-    console.log(response.data)
-    
     let API = response.data
 
     document.getElementById("cidade").innerHTML = API.name
-    document.getElementById("temperatura").innerHTML = `${(parseInt(API.main.temp) - 273)}°`
-    document.querySelector("#sensacaoTermica span").innerHTML = `${(parseInt(API.main.feels_like) - 273)}°`
-    document.querySelector("#tempMin span").innerHTML = `${(parseInt(API.main.temp_min) - 273)}°`
-    document.querySelector("#tempMax span").innerHTML = `${(parseInt(API.main.temp_max) - 273)}°`
+    document.querySelector("img").setAttribute("src", `http://openweathermap.org/img/w/${API.weather[0].icon}.png`)
+    document.getElementById("temperatura").innerHTML = `${(parseInt(API.main.temp) - 273)}°C`
+    document.querySelector("#sensacaoTermica span").innerHTML = `${(parseInt(API.main.feels_like) - 273)}°C`
+    document.querySelector("#tempMin span").innerHTML = `${(parseInt(API.main.temp_min) - 273)}°C`
+    document.querySelector("#tempMax span").innerHTML = `${(parseInt(API.main.temp_max) - 273)}°C`
     document.querySelector("#humidade span").innerHTML = `${API.main.humidity}%`
     document.querySelector("#pressao span").innerHTML = `${API.main.pressure} hPa`
 }
